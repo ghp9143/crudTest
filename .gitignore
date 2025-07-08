@@ -55,6 +55,6 @@ out/
 Thumbs.db
 
 # Secrets
-# application.properties
+application.properties
 application.yml
 .env
