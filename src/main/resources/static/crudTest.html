@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Test</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="./app.js"></script>
+</head>
+<body>
+    <div id="wrap" class="crud-test">
+        <div class="title">TITLE</div>
+
+        <div class="search-area">
+            <div class="select-common">
+                <label>구분</label>
+                <select>
+                    <option selected>전체</option>
+                    <option>제목</option>
+                    <option>내용</option>
+                </select>
+            </div>
+
+            <div class="input-common">
+                <label>검색어</label>
+                <input type="text" placeholder="검색어를 입력해 주세요.">
+            </div>
+            
+            <div class="button-wrap">
+                <button type="button">검색</button>
+            </div>
+        </div>
+
+        <div class="function-button-area">
+            <button type="button" class="common-button">삭제</button>
+            <button type="button" class="common-button" onClick="openLayerPopup('enroll')">등록</button>
+        </div>
+
+        <div class="result-list-area">
+            <div class="result-list">
+                <div class="default">검색된 내용이 없습니다.</div>
+            </div>
+        </div>
+
+        <div class="pagination">
+            <ul>
+                <li>이전</li>
+                <li class="present">1</li>
+                <li>2</li>
+                <li>3</li>
+                <li>다음</li>
+            </ul>
+        </div>
+
+        <div class="layer-popup enroll">
+            <div class="layer-popup-content">
+                <div class="popup-header">
+                    <h2>등록</h2>
+                    <span class="close-button" onClick="closeLayerPopup('enroll')">✖️</span>
+                </div>
+                
+                <div class="content-area">
+                    <div class="checkbox-area">
+                        <input type="radio" id="check2" name="radioCheck" class="common-radio" checked value="일반">
+                        <label for="check2"></label>
+                        <span>일반</span>
+                        <input type="radio" id="check3" name="radioCheck" class="common-radio" value="공지">
+                        <label for="check3"></label>
+                        <span>공지</span>
+                    </div>
+
+                    <div class="text-area">
+                        <textarea placeholder="내용을 입력해 주세요."></textarea>
+                    </div>
+
+                    <div class="layer-popup-button-area">
+                        <button type="button" onclick="submitContent()">등록</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

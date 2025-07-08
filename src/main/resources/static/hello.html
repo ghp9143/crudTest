@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>사용자 등록</title>
+  <script src="./app.js"></script>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body class="hello-wrap">
+  <div class="form">
+    <h2 class="helloHeader">사용자 정보 입력</h2>
+    <div class="input-wrap">
+      <label>이름</label>
+      <input type="text" placeholder="이름을 입력해 주세요." id="name">
+    </div>
+
+    <div class="input-wrap">
+      <lable>나이</lable>
+      <input type="number" placeholder="나이를 입력해 주세요." id="age">
+    </div>
+
+    <div class="button-wrap">
+      <button type="button" onclick="submitData()">작성 완료 및 서버에 전송</button>
+    </div>
+
+    <p id="result" class="result-box"></p>
+  </div>
+
+  <div class="design-box">
+    <div class="object">
+      <p class="text-box">
+      <span id="result2">홍길동</span> 고객님은 <span class="primary">출고 대기중</span>입니다.
+      </p>
+    </div>
+  </div>
+
+  <figure class="alt">
+    <img src="https://picsum.photos/id/593/300/300" alt="Tiger" >
+    <figcaption>Tiger</figcaption>
+  </figure>
+  <figure>
+    <img src="https://picsum.photos/id/659/300/300" alt="Wolf" >
+    <figcaption>Wolf</figcaption>
+</figure>
+</body>
+</html>
