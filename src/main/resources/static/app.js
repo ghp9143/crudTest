@@ -81,7 +81,7 @@ function submitContent() {
         textData : popup.querySelector('textarea').value
     }
 
-    fetch("http://localhost:8080/crudTest", {
+    fetch("http://www.melloplace.com:8080/crudTest", {
         method : "POST",
         headers : {
             "Content-Type" : "application/json"
@@ -100,7 +100,7 @@ function submitContent() {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-    fetch("http://localhost:8080/crudTest")
+    fetch("http://www.melloplace.com:8080/crudTest")
     .then(res => res.json())
     .then(dataList => {
         const resultListArea = document.querySelector('.result-list-area');
