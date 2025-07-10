@@ -49,8 +49,8 @@ public class HelloController {
         return "안녕, " + user.getName() + "좀만 더 해보자" + user.getAge() + "살이잖아?";
     }
 
-    @GetMapping("/crudTest")
-    public List<CrudTest> getAllTests() {
-        return crudTestRepository.findAll();
-    }
+    // @GetMapping("/crudTest")
+    // public List<CrudTest> getAllTests() {
+    //     return crudTestRepository.findAll();
+    // }
 }

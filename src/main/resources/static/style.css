@@ -532,6 +532,10 @@ input {
 	border-radius: 16px;
 	padding: 20px;
 }
+.layer-popup.confirm .layer-popup-content {
+	width: 340px;
+	height: 200px;
+}
 .popup-header {
 	display: flex;
 	justify-content: space-between;
@@ -566,6 +570,10 @@ input {
 	resize: none;
 }
 
+.layer-popup-content .content-area .text-area .text {
+	text-align: center;
+}
+
 .layer-popup-content .content-area .layer-popup-button-area {
 	margin-top: 40px;
 }
@@ -578,4 +586,16 @@ input {
 	border: none;
 	border-radius: 8px;
 	cursor: pointer;
+}
+.layer-popup.confirm .layer-popup-content .content-area .layer-popup-button-area {
+	display: flex;
+	gap: 2%
+}
+.layer-popup.confirm .layer-popup-content .content-area .layer-popup-button-area button {
+	width: 49%;
+	height: 44px;
+}
+.layer-popup.confirm .layer-popup-content .content-area .layer-popup-button-area button.cancel {
+	background-color: #dbdbdb;
+	color: #333;
 }

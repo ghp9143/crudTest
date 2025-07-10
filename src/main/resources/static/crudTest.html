@@ -32,7 +32,7 @@
         </div>
 
         <div class="function-button-area">
-            <button type="button" class="common-button">삭제</button>
+            <button type="button" class="common-button" onClick="openLayerPopup('confirm')">삭제</button>
             <button type="button" class="common-button" onClick="openLayerPopup('enroll')">등록</button>
         </div>
 
@@ -74,7 +74,25 @@
                     </div>
 
                     <div class="layer-popup-button-area">
-                        <button type="button" onclick="submitContent()">등록</button>
+                        <button type="button" class="common-button" onclick="submitContent()">등록</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layer-popup confirm">
+            <div class="layer-popup-content">
+                <div class="popup-header">
+                    <h2></h2>
+                    <span class="close-button" onClick="closeLayerConfirmPopup()">✖️</span>
+                </div>
+                <div class="content-area">
+                    <div class="text-area">
+                        <p class="text">해당 내용을 삭제하시겠습니까?</p>
+                    </div>
+                    <div class="layer-popup-button-area">
+                        <button type="button" class="common-button cancel" onclick="closeLayerConfirmPopup()">취소</button>
+                        <button type="button" class="common-button" onclick="deleteResultList()">확인</button>
                     </div>
                 </div>
             </div>

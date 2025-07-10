@@ -52,7 +52,7 @@ function closeLayerPopup(e) {
 
 }
 
-function addList(typeData, textData) {
+function addList(typeData, textData, id) {
     const resultListArea = document.querySelector('.result-list-area');
 
     const defaultList = resultListArea.querySelector('.default');
@@ -65,7 +65,7 @@ function addList(typeData, textData) {
     const newList = document.createElement('div');
     newList.classList.add('result-list');
 
-    newList.innerHTML = `<div class="checkbox-area"><input type="checkbox" id="check1" class="common-checkbox"><label for="check1"></label></div><div class="content-area"><span class="tag">${typeData}</span><p class="content">${textData}</p><span class="author">작성일</span></div>`;
+    newList.innerHTML = `<div class="checkbox-area"><input type="checkbox" id="check_${id}" value="${id}" class="common-checkbox"><label for="check_${id}"></label></div><div class="content-area"><span class="tag">${typeData}</span><p class="content">${textData}</p><span class="author">작성일</span></div>`;
 
     resultListArea.appendChild(newList);
 
@@ -81,6 +81,7 @@ function submitContent() {
         textData : popup.querySelector('textarea').value
     }
 
+    // fetch("http://localhost:8080/crudTest", {
     fetch("http://www.melloplace.com:8080/crudTest", {
         method : "POST",
         headers : {
@@ -91,7 +92,8 @@ function submitContent() {
     .then(res => res.json())
     .then(result => {
         closeLayerPopup('enroll');
-        addList(data.typeData, data.textData);
+        // addList(data.typeData, data.textData);
+        addList(data.typeData, data.textData, result.id);
     })
     .catch(err => {
         console.error("등록 실패", err);
@@ -100,6 +102,7 @@ function submitContent() {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
+    // fetch("http://localhost:8080/crudTest")
     fetch("http://www.melloplace.com:8080/crudTest")
     .then(res => res.json())
     .then(dataList => {
@@ -115,3 +118,38 @@ window.addEventListener("DOMContentLoaded", () => {
         console.error("데이터 로딩 실패", err);
     })
 })
+
+function deleteResultList() {
+
+    const resultList = document.querySelector('.result-list');
+    const checkedResultList = resultList.querySelectorAll("input[type='checkbox']:checked");
+
+    checkedResultList.forEach(checkbox => {
+        const item = checkbox.closest('.result-list');
+        const id = checkbox.value;
+
+        if(item && id) {
+            // fetch(`http://localhost:8080/crudTest/${id}`, {
+            fetch(`http://www.melloplace.com:8080/crudTest/${id}`, {
+                method : "DELETE"
+            })
+            .then(res => {
+                if(!res.ok) throw new Error("삭제 실패");
+                console.log(`id = ${id} DB 삭제 완료`);
+                item.remove(); 
+            })
+            .catch(err => {
+                console.error(`id=${id} DB 삭제 실패`, err);
+                alert("서버 오류로 삭제에 실패했습니다.");
+            })
+        }
+    })
+
+    closeLayerConfirmPopup();
+}
+
+function closeLayerConfirmPopup() {
+    const popup = document.querySelector('.confirm');
+
+    popup.style.display = 'none';
+}
