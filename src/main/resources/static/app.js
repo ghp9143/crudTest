@@ -111,7 +111,7 @@ window.addEventListener("DOMContentLoaded", () => {
         resultListArea.innerHTML = "";
 
         dataList.forEach(item => {
-            addList(item.typeData, item.textData);
+            addList(item.typeData, item.textData, item.id);
         });
     })
     .catch(err => {
@@ -121,8 +121,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 function deleteResultList() {
 
-    const resultList = document.querySelector('.result-list');
-    const checkedResultList = resultList.querySelectorAll("input[type='checkbox']:checked");
+    const checkedResultList = document.querySelectorAll(".result-list input[type='checkbox']:checked");
 
     checkedResultList.forEach(checkbox => {
         const item = checkbox.closest('.result-list');
@@ -134,9 +133,14 @@ function deleteResultList() {
                 method : "DELETE"
             })
             .then(res => {
-                if(!res.ok) throw new Error("삭제 실패");
-                console.log(`id = ${id} DB 삭제 완료`);
-                item.remove(); 
+                if(res.status === 204) {
+                    console.log(`id = ${id} 삭제 완료`);
+                    item.remove();
+                } else if (res.status === 404) {
+                    alert("이미 삭제되었거나 존재하지 않는 항목입니다.");
+                } else {
+                    throw new Error("서버 오류");
+                }
             })
             .catch(err => {
                 console.error(`id=${id} DB 삭제 실패`, err);
