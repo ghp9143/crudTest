@@ -157,3 +157,42 @@ function closeLayerConfirmPopup() {
 
     popup.style.display = 'none';
 }
+
+
+// 검색기능
+
+function searchContent(event) {
+
+    event.preventDefault();
+
+    const BASE_URL = "http://www.melloplace.com:8080";
+
+    const field = document.getElementById("fieldSelect").value;
+    const keyword = document.getElementById("keywordInput").value.trim();
+
+    // 추후 전체 검색으로 변경할 예정
+    if(!keyword) {
+        alert("검색어를 입력하세요.");
+        retu
+    }
+
+    fetch(`${BASE_URL}/crudTest/search?field=${field}&keyword=${encodeURIComponent(keyword)}`)
+    .then(res => res.json())
+    .then(dataList => {
+        const area = document.querySelector('.result-list-area');
+
+        area.innerHTML = "";
+
+        if(dataList.length === 0) {
+            area.innerHTML = "<div class='result-list default'>검색 결과가 없습니다</div>"
+            return;
+        }
+
+        dataList.forEach(item => addList(item.typeData, item.textData, item.id));
+    })
+    .catch(err => {
+        console.error("검색 실패", err);
+        alert("서버 오류로 검색에 실패했습니다.");
+    });
+
+}

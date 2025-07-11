@@ -45,4 +45,32 @@ public class CrudTestService {
 
         return result;
     }
+
+    public List<CrudTestDto> search(String field, String keyword) {
+        List<CrudTest> list;
+
+        switch (field) {
+            case "title":
+                list = repository.findByTypeDataContainingIgnoreCase(keyword);
+                break;
+            case "content":
+                list = repository.findByTextDataContainingIgnoreCase(keyword);
+                break;
+            default: // 'all'
+                list = repository
+                .findByTypeDataContainingIgnoreCaseOrTextDataContainingIgnoreCase(keyword, keyword);
+        }
+        
+        return list.stream().map(this::toDto).toList();
+
+    }
+
+    /* ⭐ entity → dto 변환 전용 메서드 */
+    private CrudTestDto toDto(CrudTest entity) {
+        CrudTestDto dto = new CrudTestDto();
+        dto.setId(entity.getId());
+        dto.setTypeData(entity.getTypeData());
+        dto.setTextData(entity.getTextData());
+        return dto;
+    }
 }
