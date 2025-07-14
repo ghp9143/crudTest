@@ -80,7 +80,7 @@ function addList(typeData, textData, id) {
 
     newList.innerHTML = `<div class="checkbox-area"><input type="checkbox" id="check_${id}" value="${id}" class="common-checkbox"><label for="check_${id}"></label></div><div class="content-area" onclick="openEditPopup(${id}, 'enroll')"><span class="tag">${typeData}</span><p class="content">${textData}</p><span class="author">작성일</span></div>`;
 
-    resultListArea.prependChild(newList);
+    resultListArea.prepend(newList);
 
 }
 
