@@ -466,6 +466,7 @@ input {
 }
 
 .result-list-area .result-list .content-area {
+	width: 100%;
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
@@ -484,6 +485,9 @@ input {
 }
 .result-list-area .result-list .content {
 	line-height: 1.6
+}
+.result-list-area .result-list .tag.notice + .content {
+  	font-weight: 500;
 }
 .result-list-area .result-list .author {
 	color: #999;
