@@ -98,7 +98,7 @@ function submitContent() {
 
     // 요청 메서드의 URL 분기 처리
     const method = id ? "PUT" : "POST";
-    const url = id ? `http://www.melloplace.com:8080/${id}` : "http://www.melloplace.com:8080/crudTest";
+    const url = id ? `http://www.melloplace.com:8080/crudTest/${id}` : "http://www.melloplace.com:8080/crudTest";
     // const url = id ? `http://localhost:8080/crudTest/${id}` : "http://localhost:8080/crudTest";
 
 
