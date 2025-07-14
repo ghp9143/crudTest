@@ -52,14 +52,14 @@ public class CrudTestService {
 
         switch (field) {
             case "title":
-                list = repository.findByTypeDataContainingIgnoreCase(keyword);
+                list = repository.findByTypeDataContainingIgnoreCaseOrderByIdDesc(keyword);
                 break;
             case "content":
-                list = repository.findByTextDataContainingIgnoreCase(keyword);
+                list = repository.findByTextDataContainingIgnoreCaseOrderByIdDesc(keyword);
                 break;
             default: // 'all'
                 list = repository
-                .findByTypeDataContainingIgnoreCaseOrTextDataContainingIgnoreCase(keyword, keyword);
+                .findByTypeDataContainingIgnoreCaseOrTextDataContainingIgnoreCaseOrderByIdDesc(keyword, keyword);
         }
         
         return list.stream().map(this::toDto).toList();

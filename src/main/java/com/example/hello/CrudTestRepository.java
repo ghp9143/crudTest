@@ -8,11 +8,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CrudTestRepository extends JpaRepository<CrudTest, Long> {
     // 제목(typeData)·내용(textData) 모두 조회
-    List<CrudTest> findByTypeDataContainingIgnoreCaseOrTextDataContainingIgnoreCase(String t, String c);
+    List<CrudTest> findByTypeDataContainingIgnoreCaseOrTextDataContainingIgnoreCaseOrderByIdDesc(String t, String c);
 
     // 제목만
-    List<CrudTest> findByTypeDataContainingIgnoreCase(String t);
+    List<CrudTest> findByTypeDataContainingIgnoreCaseOrderByIdDesc(String t);
 
     // 내용만
-    List<CrudTest> findByTextDataContainingIgnoreCase(String c);
+    List<CrudTest> findByTextDataContainingIgnoreCaseOrderByIdDesc(String c);
 }
