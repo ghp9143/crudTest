@@ -79,7 +79,7 @@ function addList(typeData, textData, id) {
 
     const tagClass = typeData === "공지" ? "tag notice" : "tag";
 
-    newList.innerHTML = `<div class="checkbox-area"><input type="checkbox" id="check_${id}" value="${id}" class="common-checkbox"><label for="check_${id}"></label></div><div class="content-area" onclick="openEditPopup(${id}, 'enroll')"><span class="tag">${typeData}</span><p class="content">${textData}</p><span class="author">작성일</span></div>`;
+    newList.innerHTML = `<div class="checkbox-area"><input type="checkbox" id="check_${id}" value="${id}" class="common-checkbox"><label for="check_${id}"></label></div><div class="content-area" onclick="openEditPopup(${id}, 'enroll')"><span class="${tagClass}">${typeData}</span><p class="content">${textData}</p><span class="author">작성일</span></div>`;
 
     resultListArea.prepend(newList);
 
