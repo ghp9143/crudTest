@@ -74,9 +74,10 @@ function addList(typeData, textData, id) {
         defaultList.parentElement.remove();
     }
 
-
     const newList = document.createElement('div');
     newList.classList.add('result-list');
+
+    const tagClass = typeData === "공지" ? "tag notice" : "tag";
 
     newList.innerHTML = `<div class="checkbox-area"><input type="checkbox" id="check_${id}" value="${id}" class="common-checkbox"><label for="check_${id}"></label></div><div class="content-area" onclick="openEditPopup(${id}, 'enroll')"><span class="tag">${typeData}</span><p class="content">${textData}</p><span class="author">작성일</span></div>`;
 
@@ -120,6 +121,7 @@ function submitContent() {
         if(id) {
             const existingItem = document.querySelector(`#check_${id}`).closest('.result-list');
             existingItem.querySelector('.tag').textContent = result.typeData;
+            existingItem.querySelector('.tag').className = result.typeData === "공지" ? "tag notice" : "tag";
             existingItem.querySelector('.content').textContent = result.textData;
         } else {
             addList(data.typeData, data.textData, result.id);
