@@ -1,6 +1,7 @@
 package com.example.hello;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -72,5 +73,26 @@ public class CrudTestService {
         dto.setTypeData(entity.getTypeData());
         dto.setTextData(entity.getTextData());
         return dto;
+    }
+
+    public Optional<CrudTestDto> findOne(Long id) {
+        // return repository.findById(id)      // Optional<CrudTest>
+        //                  .map(this::toDto); // Optional<CrudTestDto>
+
+        System.out.println("findOne 요청됨 id = " + id);
+        Optional<CrudTest> entityOpt = repository.findById(id);
+        if (entityOpt.isEmpty()) {
+            System.out.println("해당 ID의 데이터 없음!");
+        }
+        return entityOpt.map(this::toDto);
+    }
+
+    public Optional<CrudTestDto> update(Long id, CrudTestDto dto) {
+        return repository.findById(id).map(entity -> {
+            entity.setTypeData(dto.getTypeData());
+            entity.setTextData(dto.getTextData());
+            CrudTest saved = repository.save(entity);
+            return toDto(saved);
+        });
     }
 }

@@ -1,3 +1,10 @@
+// 전역변수 설정
+const BASE_URL = "http://www.melloplace.com:8080";
+// const BASE_URL = "http://localhost:8080";
+// 수정용 input:hidden
+const editIdEl = document.getElementById("editId");
+
+
 function submitData() {
     const name = document.getElementById("name").value;
     const age = document.getElementById("age").value;
@@ -27,6 +34,10 @@ function start() {
 
 function openLayerPopup(e) {
     document.querySelector('.' + e).style.display = 'flex';
+    document.querySelector('.' + e).dataset.mode = "create";
+    document.getElementById('actionType').textContent = "등록";
+    document.getElementById('actionBtn').textContent = "등록";
+    editIdEl.value = '';
 }
 
 function closeLayerPopup(e) {
@@ -50,6 +61,8 @@ function closeLayerPopup(e) {
         textarea.value = '';
     }
 
+    editIdEl.value = '';
+
 }
 
 function addList(typeData, textData, id) {
@@ -65,7 +78,7 @@ function addList(typeData, textData, id) {
     const newList = document.createElement('div');
     newList.classList.add('result-list');
 
-    newList.innerHTML = `<div class="checkbox-area"><input type="checkbox" id="check_${id}" value="${id}" class="common-checkbox"><label for="check_${id}"></label></div><div class="content-area"><span class="tag">${typeData}</span><p class="content">${textData}</p><span class="author">작성일</span></div>`;
+    newList.innerHTML = `<div class="checkbox-area"><input type="checkbox" id="check_${id}" value="${id}" class="common-checkbox"><label for="check_${id}"></label></div><div class="content-area" onclick="openEditPopup(${id}, 'enroll')"><span class="tag">${typeData}</span><p class="content">${textData}</p><span class="author">작성일</span></div>`;
 
     resultListArea.appendChild(newList);
 
@@ -74,30 +87,47 @@ function addList(typeData, textData, id) {
 function submitContent() {
     const popup = document.querySelector('.layer-popup-content');
 
-    const type = popup.querySelector('.common-radio:checked');
+    const type = popup.querySelector('.common-radio:checked').value;
+    const text = popup.querySelector('textarea').value;
+    const id = editIdEl.value;
 
     const data = {
-        typeData : type.value,
-        textData : popup.querySelector('textarea').value
+        typeData : type,
+        textData : text
     }
 
-    // fetch("http://localhost:8080/crudTest", {
-    fetch("http://www.melloplace.com:8080/crudTest", {
-        method : "POST",
+    // 요청 메서드의 URL 분기 처리
+    const method = id ? "PUT" : "POST";
+    const url = id ? `http://www.melloplace.com:8080/${id}` : "http://www.melloplace.com:8080/crudTest";
+    // const url = id ? `http://localhost:8080/crudTest/${id}` : "http://localhost:8080/crudTest";
+
+
+    fetch(url, {
+        method : method,
         headers : {
             "Content-Type" : "application/json"
         },
         body : JSON.stringify(data)
     })
-    .then(res => res.json())
+    .then(res => {
+        if (!res.ok) throw new Error("서버 응답 오류");
+        return res.json();
+    })
     .then(result => {
         closeLayerPopup('enroll');
         // addList(data.typeData, data.textData);
-        addList(data.typeData, data.textData, result.id);
+
+        if(id) {
+            const existingItem = document.querySelector(`#check_${id}`).closest('.result-list');
+            existingItem.querySelector('.tag').textContent = result.typeData;
+            existingItem.querySelector('.content').textContent = result.textData;
+        } else {
+            addList(data.typeData, data.textData, result.id);
+        }
     })
     .catch(err => {
-        console.error("등록 실패", err);
-        alert("서버 오류로 등록에 실패했습니다.");
+        console.error("등록/수정 실패", err);
+        alert("서버 오류로 등록/저장에 실패했습니다.");
     });
 }
 
@@ -165,15 +195,13 @@ function searchContent(event) {
 
     event.preventDefault();
 
-    const BASE_URL = "http://www.melloplace.com:8080";
-
     const field = document.getElementById("fieldSelect").value;
     const keyword = document.getElementById("keywordInput").value.trim();
 
     // 추후 전체 검색으로 변경할 예정
     if(!keyword) {
         alert("검색어를 입력하세요.");
-        retu
+        return;
     }
 
     fetch(`${BASE_URL}/crudTest/search?field=${field}&keyword=${encodeURIComponent(keyword)}`)
@@ -195,4 +223,27 @@ function searchContent(event) {
         alert("서버 오류로 검색에 실패했습니다.");
     });
 
+}
+
+
+async function openEditPopup(id, e) {
+    const data = await fetch(`${BASE_URL}/crudTest/${id}`).then(r => r.json());
+    
+    document.querySelector('.' + e).style.display = 'flex';
+    document.querySelector('.' + e).dataset.mode = "edit";
+    document.getElementById('actionType').textContent = "수정";
+    document.getElementById('actionBtn').textContent = "저장";
+
+    editIdEl.value = id;
+
+    document.querySelectorAll('.common-radio').forEach( r => {
+        r.checked = (r.value === data.typeData);
+    });
+
+    const popupRoot = document.querySelector('.' + e)
+
+    console.log(data);
+    popupRoot.querySelector('textarea').value = data.textData;
+
+    
 }

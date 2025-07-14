@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRUD Test</title>
     <link rel="stylesheet" href="./style.css">
-    <script src="./app.js"></script>
+    <script src="./app.js" defer></script>
 </head>
 <body>
     <div id="wrap" class="crud-test">
@@ -55,7 +55,7 @@
         <div class="layer-popup enroll">
             <div class="layer-popup-content">
                 <div class="popup-header">
-                    <h2>등록</h2>
+                    <h2 id="actionType">등록</h2>
                     <span class="close-button" onClick="closeLayerPopup('enroll')">✖️</span>
                 </div>
                 
@@ -71,10 +71,11 @@
 
                     <div class="text-area">
                         <textarea placeholder="내용을 입력해 주세요."></textarea>
+                        <input type="hidden" id="editId">
                     </div>
 
                     <div class="layer-popup-button-area">
-                        <button type="button" class="common-button" onclick="submitContent()">등록</button>
+                        <button type="button" id="actionBtn" class="common-button" onclick="submitContent()">등록</button>
                     </div>
                 </div>
             </div>
