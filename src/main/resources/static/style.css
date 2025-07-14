@@ -470,6 +470,7 @@ input {
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
+	cursor: pointer;
 }
 .result-list-area .result-list .tag {
 	padding: 6px 10px;
