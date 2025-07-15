@@ -47,7 +47,7 @@ public class CrudTestController {
                   .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<CrudTestDto> saveAndReturnOne(@RequestBody CrudTestDto dto) {
         CrudTestDto savedDto = crudTestService.saveAndReturn(dto);
         return ResponseEntity.ok(savedDto);
