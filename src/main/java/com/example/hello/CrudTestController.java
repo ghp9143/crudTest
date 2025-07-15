@@ -2,6 +2,7 @@ package com.example.hello;
 
 import java.util.List;
 
+import org.hibernate.query.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -73,6 +74,5 @@ public class CrudTestController {
         Optional<CrudTestDto> updated = crudTestService.update(id, dto);
         return updated.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
-
 }
 

@@ -496,6 +496,9 @@ input {
 .result-list-area .result-list .author .author_text {
 	color: #333;
 }
+.result-list-area .result-list .author .created-date {
+	margin-left: 8px;
+}
 
 .pagination {
 	padding: 20px;	

@@ -1,10 +1,13 @@
 package com.example.hello;
 
+import java.time.LocalDateTime;
+
 public class CrudTestDto {
 
     private Long id;
     private String typeData;
     private String textData;
+    private LocalDateTime createdAt;
 
     public Long getId() {
         return id;
@@ -28,6 +31,14 @@ public class CrudTestDto {
 
     public void setTextData(String textData) {
         this.textData = textData;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
 }
