@@ -28,6 +28,7 @@ public class CrudTestService {
             dto.setId(entity.getId());
             dto.setTypeData(entity.getTypeData());
             dto.setTextData(entity.getTextData());
+            dto.setCreatedAt(entity.getCreatedAt());
             return dto;
         }).collect(Collectors.toList());
     }
@@ -43,6 +44,7 @@ public class CrudTestService {
         result.setId(saved.getId()); // ← 저장된 ID
         result.setTypeData(saved.getTypeData());
         result.setTextData(saved.getTextData());
+         result.setCreatedAt(saved.getCreatedAt());
 
         return result;
     }

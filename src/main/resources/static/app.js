@@ -1,6 +1,6 @@
 // 전역변수 설정
-const BASE_URL = "http://www.melloplace.com:8080";
-// const BASE_URL = "http://localhost:8080";
+// const BASE_URL = "http://www.melloplace.com:8080";
+const BASE_URL = "http://localhost:8080";
 // 수정용 input:hidden
 const editIdEl = document.getElementById("editId");
 
@@ -65,7 +65,7 @@ function closeLayerPopup(e) {
 
 }
 
-function addList(typeData, textData, id) {
+function addList(typeData, textData, id, createdAt) {
     const resultListArea = document.querySelector('.result-list-area');
 
     const defaultList = resultListArea.querySelector('.default');
@@ -79,9 +79,11 @@ function addList(typeData, textData, id) {
 
     const tagClass = typeData === "공지" ? "tag notice" : "tag";
 
-    newList.innerHTML = `<div class="checkbox-area"><input type="checkbox" id="check_${id}" value="${id}" class="common-checkbox"><label for="check_${id}"></label></div><div class="content-area" onclick="openEditPopup(${id}, 'enroll')"><span class="${tagClass}">${typeData}</span><p class="content">${textData}</p><span class="author">작성일<span class="created-date">${new Date(data.createdAt).toLocaleString()}</span></span></div>`;
+    newList.innerHTML = `<div class="checkbox-area"><input type="checkbox" id="check_${id}" value="${id}" class="common-checkbox"><label for="check_${id}"></label></div><div class="content-area" onclick="openEditPopup(${id}, 'enroll')"><span class="${tagClass}">${typeData}</span><p class="content">${textData}</p><span class="author">작성일<span class="created-date">${formatRelativeTime(createdAt)}</span></span></div>`;
 
     resultListArea.prepend(newList);
+
+    console.log(createdAt);
 
 }
 
@@ -99,8 +101,8 @@ function submitContent() {
 
     // 요청 메서드의 URL 분기 처리
     const method = id ? "PUT" : "POST";
-    const url = id ? `http://www.melloplace.com:8080/crudTest/${id}` : "http://www.melloplace.com:8080/crudTest";
-    // const url = id ? `http://localhost:8080/crudTest/${id}` : "http://localhost:8080/crudTest";
+    // const url = id ? `http://www.melloplace.com:8080/crudTest/${id}` : "http://www.melloplace.com:8080/crudTest";
+    const url = id ? `http://localhost:8080/crudTest/${id}` : "http://localhost:8080/crudTest";
 
 
     fetch(url, {
@@ -124,7 +126,7 @@ function submitContent() {
             existingItem.querySelector('.tag').className = result.typeData === "공지" ? "tag notice" : "tag";
             existingItem.querySelector('.content').textContent = result.textData;
         } else {
-            addList(data.typeData, data.textData, result.id);
+            addList(data.typeData, data.textData, result.id, result.createdAt);
         }
     })
     .catch(err => {
@@ -134,8 +136,8 @@ function submitContent() {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-    // fetch("http://localhost:8080/crudTest")
-    fetch("http://www.melloplace.com:8080/crudTest")
+    fetch("http://localhost:8080/crudTest")
+    // fetch("http://www.melloplace.com:8080/crudTest")
     .then(res => res.json())
     .then(dataList => {
         const resultListArea = document.querySelector('.result-list-area');
@@ -143,7 +145,7 @@ window.addEventListener("DOMContentLoaded", () => {
         resultListArea.innerHTML = "";
 
         dataList.forEach(item => {
-            addList(item.typeData, item.textData, item.id);
+            addList(item.typeData, item.textData, item.id, item.createdAt);
         });
     })
     .catch(err => {
@@ -160,8 +162,8 @@ function deleteResultList() {
         const id = checkbox.value;
 
         if(item && id) {
-            // fetch(`http://localhost:8080/crudTest/${id}`, {
-            fetch(`http://www.melloplace.com:8080/crudTest/${id}`, {
+            fetch(`http://localhost:8080/crudTest/${id}`, {
+            // fetch(`http://www.melloplace.com:8080/crudTest/${id}`, {
                 method : "DELETE"
             })
             .then(res => {
@@ -218,7 +220,7 @@ function searchContent(event) {
             return;
         }
 
-        dataList.forEach(item => addList(item.typeData, item.textData, item.id));
+        dataList.forEach(item => addList(item.typeData, item.textData, item.id, item.createdAt));
     })
     .catch(err => {
         console.error("검색 실패", err);
@@ -248,4 +250,23 @@ async function openEditPopup(id, e) {
     popupRoot.querySelector('textarea').value = data.textData;
 
     
+}
+
+
+function formatRelativeTime(dateStr) {
+    const d = new Date(dateStr);
+    const diffSec = Math.floor((Date.now() - d.getTime()) / 1000);
+    if (isNaN(diffSec) || diffSec < 0) return '';         // 잘못된 입력 처리
+
+    if (diffSec < 60)               return '방금 전';
+    const diffMin = Math.floor(diffSec / 60);
+    if (diffMin < 60)               return `${diffMin}분 전`;
+    const diffHr  = Math.floor(diffMin / 60);
+    if (diffHr < 24)                return `${diffHr}시간 전`;
+    const diffDay = Math.floor(diffHr / 24);
+    if (diffDay < 30)               return `${diffDay}일 전`;
+    const diffMon = Math.floor(diffDay / 30);
+    if (diffMon < 12)               return `${diffMon}달 전`;
+    const diffYr  = Math.floor(diffMon / 12);
+    return `${diffYr}년 전`;
 }
