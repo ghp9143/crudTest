@@ -72,6 +72,7 @@ public class CrudTestService {
         dto.setId(entity.getId());
         dto.setTypeData(entity.getTypeData());
         dto.setTextData(entity.getTextData());
+        dto.setCreatedAt(entity.getCreatedAt());
         return dto;
     }
 
