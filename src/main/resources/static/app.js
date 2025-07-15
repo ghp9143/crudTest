@@ -121,6 +121,7 @@ function submitContent() {
     })
     .then(result => {
         closeLayerPopup('enroll');
+        loadPage(0);    
         // addList(data.typeData, data.textData);
 
         if(id) {
@@ -190,6 +191,7 @@ function deleteResultList() {
     })
 
     closeLayerConfirmPopup();
+    loadPage(currentPage);  
 }
 
 function closeLayerConfirmPopup() {
