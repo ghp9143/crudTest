@@ -1,6 +1,6 @@
 // 전역변수 설정
-// const BASE_URL = "http://www.melloplace.com:8080";
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = "http://www.melloplace.com:8080";
+// const BASE_URL = "http://localhost:8080";
 // 수정용 input:hidden
 const editIdEl = document.getElementById("editId");
 
@@ -101,8 +101,8 @@ function submitContent() {
 
     // 요청 메서드의 URL 분기 처리
     const method = id ? "PUT" : "POST";
-    // const url = id ? `http://www.melloplace.com:8080/crudTest/${id}` : "http://www.melloplace.com:8080/crudTest";
-    const url = id ? `http://localhost:8080/crudTest/${id}` : "http://localhost:8080/crudTest";
+    const url = id ? `http://www.melloplace.com:8080/crudTest/${id}` : "http://www.melloplace.com:8080/crudTest";
+    // const url = id ? `http://localhost:8080/crudTest/${id}` : "http://localhost:8080/crudTest";
 
 
     fetch(url, {
@@ -136,8 +136,8 @@ function submitContent() {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-    fetch("http://localhost:8080/crudTest")
-    // fetch("http://www.melloplace.com:8080/crudTest")
+    // fetch("http://localhost:8080/crudTest")
+    fetch("http://www.melloplace.com:8080/crudTest")
     .then(res => res.json())
     .then(dataList => {
         const resultListArea = document.querySelector('.result-list-area');
@@ -162,8 +162,8 @@ function deleteResultList() {
         const id = checkbox.value;
 
         if(item && id) {
-            fetch(`http://localhost:8080/crudTest/${id}`, {
-            // fetch(`http://www.melloplace.com:8080/crudTest/${id}`, {
+            // fetch(`http://localhost:8080/crudTest/${id}`, {
+            fetch(`http://www.melloplace.com:8080/crudTest/${id}`, {
                 method : "DELETE"
             })
             .then(res => {
