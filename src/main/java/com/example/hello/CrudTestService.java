@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -68,7 +70,7 @@ public class CrudTestService {
 
     }
 
-    /* ⭐ entity → dto 변환 전용 메서드 */
+    /* entity → dto 변환 전용 메서드 */
     private CrudTestDto toDto(CrudTest entity) {
         CrudTestDto dto = new CrudTestDto();
         dto.setId(entity.getId());
@@ -97,5 +99,29 @@ public class CrudTestService {
             CrudTest saved = repository.save(entity);
             return toDto(saved);
         });
+    }
+
+    // 페이징 조회 추가
+    public Page<CrudTestDto> findAllPaged(Pageable pageable) {
+        return repository.findAll(pageable).map(this::toDto);
+    }
+
+    // 검색 + 페이징 조회 추가
+    public Page<CrudTestDto> searchPaged(String field, String keyword, Pageable pageable) {
+        Page<CrudTest> page;
+
+        switch (field) {
+            case "title":
+                page = repository.findByTypeDataContainingIgnoreCase(keyword, pageable);
+                break;
+            case "content":
+                page = repository.findByTextDataContainingIgnoreCase(keyword, pageable);
+                break;
+            default: // 'all'
+                page = repository.findByTypeDataContainingIgnoreCaseOrTextDataContainingIgnoreCase(keyword, keyword, pageable);
+        }
+
+        return page.map(this::toDto);
+
     }
 }

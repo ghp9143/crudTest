@@ -1,8 +1,11 @@
 // 전역변수 설정
-const BASE_URL = "http://www.melloplace.com:8080";
-// const BASE_URL = "http://localhost:8080";
+// const BASE_URL = "http://www.melloplace.com:8080";
+const BASE_URL = "http://localhost:8080";
 // 수정용 input:hidden
 const editIdEl = document.getElementById("editId");
+
+let currentPage = 0;
+const pageSize = 5;
 
 
 function submitData() {
@@ -101,8 +104,8 @@ function submitContent() {
 
     // 요청 메서드의 URL 분기 처리
     const method = id ? "PUT" : "POST";
-    const url = id ? `http://www.melloplace.com:8080/crudTest/${id}` : "http://www.melloplace.com:8080/crudTest";
-    // const url = id ? `http://localhost:8080/crudTest/${id}` : "http://localhost:8080/crudTest";
+    // const url = id ? `http://www.melloplace.com:8080/crudTest/${id}` : "http://www.melloplace.com:8080/crudTest";
+    const url = id ? `http://localhost:8080/crudTest/${id}` : "http://localhost:8080/crudTest";
 
 
     fetch(url, {
@@ -136,8 +139,9 @@ function submitContent() {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-    // fetch("http://localhost:8080/crudTest")
-    fetch("http://www.melloplace.com:8080/crudTest")
+
+    fetch("http://localhost:8080/crudTest")
+    // fetch("http://www.melloplace.com:8080/crudTest")
     .then(res => res.json())
     .then(dataList => {
         const resultListArea = document.querySelector('.result-list-area');
@@ -151,6 +155,8 @@ window.addEventListener("DOMContentLoaded", () => {
     .catch(err => {
         console.error("데이터 로딩 실패", err);
     })
+
+    loadPage(0);
 })
 
 function deleteResultList() {
@@ -162,8 +168,8 @@ function deleteResultList() {
         const id = checkbox.value;
 
         if(item && id) {
-            // fetch(`http://localhost:8080/crudTest/${id}`, {
-            fetch(`http://www.melloplace.com:8080/crudTest/${id}`, {
+            fetch(`http://localhost:8080/crudTest/${id}`, {
+            // fetch(`http://www.melloplace.com:8080/crudTest/${id}`, {
                 method : "DELETE"
             })
             .then(res => {
@@ -269,4 +275,66 @@ function formatRelativeTime(dateStr) {
     if (diffMon < 12)               return `${diffMon}달 전`;
     const diffYr  = Math.floor(diffMon / 12);
     return `${diffYr}년 전`;
+}
+
+function drawPagination(totalPages, currentPage) {
+    const paginationUl = document.querySelector('.pagination ul');
+    paginationUl.innerHTML = ""; // 기존 내용 초기화
+
+    // 이전 버튼
+    const prevLi = document.createElement('li');
+    prevLi.textContent = '이전';
+    prevLi.classList.toggle('disabled', currentPage === 0);
+    prevLi.addEventListener('click', () => {
+        if (currentPage > 0) loadPage(currentPage - 1);
+    });
+    paginationUl.appendChild(prevLi);
+
+    // 페이지 번호 버튼들
+    for (let i = 0; i < totalPages; i++) {
+        const li = document.createElement('li');
+        li.textContent = i + 1;
+        if (i === currentPage) li.classList.add('present');
+        li.addEventListener('click', () => {
+            loadPage(i);
+        });
+        paginationUl.appendChild(li);
+    }
+
+    // 다음 버튼
+    const nextLi = document.createElement('li');
+    nextLi.textContent = '다음';
+    nextLi.classList.toggle('disabled', currentPage === totalPages - 1);
+    nextLi.addEventListener('click', () => {
+        if (currentPage < totalPages - 1) loadPage(currentPage + 1);
+    });
+    paginationUl.appendChild(nextLi);
+}
+
+
+// 🔖 추가: 페이지별 로딩
+function loadPage(page) {
+
+  currentPage = page;
+
+  fetch(`${BASE_URL}/crudTest/paged?page=${page}&size=${pageSize}`)
+    .then(res => {
+        if (!res.ok) {                    // ★ 상태 코드 확인
+            return res.text().then(t => {   // 4xx/5xx면 본문도 같이 보기
+            throw new Error(`HTTP ${res.status}\n${t}`);
+        });
+      }
+      return res.json();  
+    })
+    .then(data => {
+      const area = document.querySelector('.result-list-area');
+      area.innerHTML = "";
+      data.content.forEach(item =>
+        addList(item.typeData, item.textData, item.id, item.createdAt)
+      );
+      drawPagination(data.totalPages, currentPage);
+    })
+    .catch(err => {
+        console.error("페이지 데이터 로딩 실패", err);
+    });
 }
